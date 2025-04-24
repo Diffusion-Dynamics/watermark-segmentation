@@ -93,7 +93,17 @@ source venv/bin/activate # On Windows use `virtual\Scripts\activate`
 pip install -r requirements.txt
 ```
 
-**4. Prepare Datasets:**
+**4. Download Pre-trained Model (Optional):**
+
+If you want to fine-tune the model or run inference without training from scratch, you can download a pre-trained checkpoint:
+
+```bash
+wget https://pub-1039b7ab1ee541c1a1f5ff68ddc309ce.r2.dev/best_watermark_model_mit_b5_best.pth
+```
+
+This checkpoint is compatible with the model architecture defined in the notebook.
+
+**5. Prepare Datasets:**
 
 *   **Background Images:** You need a dataset of diverse background images. The original setup used Flickr8k. Download and extract it (or your chosen dataset) into a known location.
     ```bash
@@ -104,7 +114,7 @@ pip install -r requirements.txt
     ```
 *   **Watermark Logos:** Place your desired watermark logo images (PNG format with transparency is recommended) into the `logos/` directory. The `dataset.py` script will randomly use these.
 
-**5. Run the Notebook:**
+**6. Run the Notebook:**
 
 *   Launch Jupyter Lab or Jupyter Notebook:
     ```bash
@@ -116,8 +126,10 @@ pip install -r requirements.txt
 
 ## Model Architecture and Training
 
-The core segmentation model leverages standard segmentation architectures conveniently provided by the library [`segmentation-models-pytorch`](https://github.com/qubvel-org/segmentation_models.pytorch). This library offers pre-implemented models with various backbones.
+The core segmentation model leverages standard segmentation architectures conveniently provided by hypothesized `segmentation-models-pytorch` library ([https://github.com/qubvel-org/segmentation_models.pytorch](https://github.com/qubvel-org/segmentation_models.pytorch)). This library offers pre-implemented models with various backbones.
 To accelerate training and reduce the need for vast amounts of training data, the model utilizes a backbone pre-trained on the ImageNet dataset.
+
+The notebook also demonstrates loading a provided pre-trained checkpoint (`*.pth`). This serves as an excellent starting point for fine-tuning the model on your specific watermark types or even adapting it for related tasks, such as detecting other forms of synthetic image artifacts. Fine-tuning can significantly reduce the required training time and data compared to training from scratch.
 
 Training is managed using [`pytorch-lightning`](https://lightning.ai/docs/pytorch/stable/), which simplifies the training loop, facilitates multi-GPU training, and integrates logging.
 The training process is compatible with both Apple M-series chips (via MPS) and NVIDIA GPUs (via CUDA). While NVIDIA GPUs generally offer faster training, fine-tuning on an Apple M-series chip is feasible and can typically be completed within a few hours.

@@ -7,3 +7,4 @@ __MACOSX/
 __pycache__/
 lightning_logs/
 *.pth
+.ipynb_checkpoints/
